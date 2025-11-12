@@ -20,11 +20,12 @@ struct LoginView: View {
             VStack(spacing: 20) {
                 Image(systemName: "eurosign.circle.fill")
                     .font(.system(size: 80))
-                    .foregroundStyle(.blue)
+                    .foregroundStyle(.sparkassenRed)
 
-                Text("Wero")
+                Text("Sparkassen")
                     .font(.largeTitle)
                     .fontWeight(.bold)
+                    .foregroundStyle(.sparkassenRed)
 
                 Text("Wähle einen Benutzer aus")
                     .font(.headline)
@@ -53,7 +54,7 @@ struct LoginView: View {
                                     Spacer()
                                     Text(String(format: "%.2f €", user.balance))
                                         .font(.headline)
-                                        .foregroundStyle(.blue)
+                                        .foregroundStyle(.sparkassenRed)
                                 }
                                 .padding(.vertical, 8)
                             }

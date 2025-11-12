@@ -106,7 +106,7 @@ struct RewardsView: View {
             HStack {
                 Image(systemName: reward.rewardType.icon)
                     .font(.title2)
-                    .foregroundColor(.accentColor)
+                    .foregroundColor(.sparkassenRed)
 
                 Text(reward.title)
                     .font(.headline)
@@ -123,7 +123,7 @@ struct RewardsView: View {
                     .foregroundColor(.white)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
-                    .background(Color.purple)
+                    .background(Color.sparkassenDarkBlue)
                     .cornerRadius(8)
                 }
             }
@@ -184,7 +184,7 @@ struct RewardsView: View {
                     systemImage: reward.canBeUsed() ? "checkmark.circle.fill" : "xmark.circle.fill"
                 )
                 .font(.caption)
-                .foregroundColor(reward.canBeUsed() ? .green : .red)
+                .foregroundColor(reward.canBeUsed() ? .sparkassenYellow : .sparkassenRed)
 
                 Spacer()
 

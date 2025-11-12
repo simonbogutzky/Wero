@@ -84,7 +84,7 @@ struct AchievementsView: View {
             HStack {
                 Image(systemName: "trophy.fill")
                     .font(.title)
-                    .foregroundColor(.accentColor)
+                    .foregroundColor(.sparkassenRed)
 
                 Text("\(unlockedCount) / \(totalCount)")
                     .font(.title2)
@@ -94,7 +94,7 @@ struct AchievementsView: View {
             }
 
             ProgressView(value: Double(unlockedCount), total: Double(max(totalCount, 1)))
-                .tint(.accentColor)
+                .tint(.sparkassenRed)
 
             HStack {
                 Text("\(Int((Double(unlockedCount) / Double(max(totalCount, 1))) * 100))% Complete")
@@ -148,12 +148,12 @@ struct AchievementsView: View {
         VStack(spacing: 12) {
             ZStack {
                 Circle()
-                    .fill(achievement.isUnlocked ? Color.accentColor.opacity(0.2) : Color.gray.opacity(0.2))
+                    .fill(achievement.isUnlocked ? Color.sparkassenRed.opacity(0.2) : Color.gray.opacity(0.2))
                     .frame(width: 80, height: 80)
 
                 Image(systemName: achievement.type.icon)
                     .font(.system(size: 36))
-                    .foregroundColor(achievement.isUnlocked ? .accentColor : .gray)
+                    .foregroundColor(achievement.isUnlocked ? .sparkassenRed : .gray)
             }
 
             VStack(spacing: 4) {
@@ -172,17 +172,17 @@ struct AchievementsView: View {
             if achievement.isUnlocked {
                 HStack(spacing: 4) {
                     Image(systemName: "checkmark.circle.fill")
-                        .foregroundColor(.green)
+                        .foregroundColor(.sparkassenYellow)
 
                     Text("Unlocked")
                         .font(.caption)
                         .fontWeight(.semibold)
                 }
-                .foregroundColor(.green)
+                .foregroundColor(.sparkassenYellow)
             } else {
                 VStack(spacing: 4) {
                     ProgressView(value: Double(achievement.progress), total: Double(achievement.targetProgress))
-                        .tint(.accentColor)
+                        .tint(.sparkassenRed)
 
                     Text("\(achievement.progress) / \(achievement.targetProgress)")
                         .font(.caption2)
@@ -193,7 +193,7 @@ struct AchievementsView: View {
             HStack(spacing: 4) {
                 Image(systemName: "star.fill")
                     .font(.caption2)
-                    .foregroundColor(.yellow)
+                    .foregroundColor(.sparkassenYellow)
 
                 Text("+\(achievement.type.pointsReward) pts")
                     .font(.caption)
@@ -208,7 +208,7 @@ struct AchievementsView: View {
         .opacity(achievement.isUnlocked ? 1.0 : 0.7)
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(achievement.isUnlocked ? Color.accentColor : Color.clear, lineWidth: 2)
+                .stroke(achievement.isUnlocked ? Color.sparkassenRed : Color.clear, lineWidth: 2)
         )
     }
 }
