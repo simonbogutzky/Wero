@@ -13,7 +13,7 @@ struct RewardsView: View {
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
-    @Environment(AppState.self) private var appState
+    @Binding var appState: AppState
 
     @Query private var rewards: [Reward]
 

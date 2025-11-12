@@ -12,7 +12,7 @@ struct GamificationView: View {
     // MARK: - Properties
 
     @Environment(\.modelContext) private var modelContext
-    @Environment(AppState.self) private var appState
+    @Binding var appState: AppState
 
     @Query private var loyaltyProfiles: [LoyaltyProfile]
     @Query private var achievements: [Achievement]
@@ -68,10 +68,10 @@ struct GamificationView: View {
                 }
             }
             .sheet(isPresented: $showRewardsSheet) {
-                RewardsView()
+                RewardsView(appState: $appState)
             }
             .sheet(isPresented: $showAchievementsSheet) {
-                AchievementsView()
+                AchievementsView(appState: $appState)
             }
         }
     }

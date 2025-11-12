@@ -19,7 +19,7 @@ struct MainTabView: View {
                     Label("Zahlen", systemImage: "creditcard")
                 }
 
-            GamificationView()
+            GamificationView(appState: $appState)
                 .tabItem {
                     Label("Rewards", systemImage: "trophy.fill")
                 }
