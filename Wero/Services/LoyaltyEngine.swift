@@ -9,11 +9,62 @@ import Foundation
 import FoundationModels
 import SwiftData
 
+// MARK: - AI Reward Generation Structures
+
+@Generable
+struct AIRewardRecommendation {
+    @Guide(description: "Title of the personalized reward offer")
+    let title: String
+
+    @Guide(description: "Detailed description of the reward and how to earn it")
+    let description: String
+
+    @Guide(description: "Cashback percentage for this reward", .range(1.0...10.0))
+    let cashbackPercentage: Double
+
+    @Guide(description: "Minimum transaction amount required in euros", .range(1.0...1000.0))
+    let minTransactionAmount: Double
+
+    @Guide(description: "Maximum cashback amount in euros", .range(5.0...200.0))
+    let maxCashback: Double
+
+    @Guide(description: "Maximum number of times this reward can be used", .range(1...10))
+    let maxUsages: Int
+
+    @Guide(description: "Type of reward: bonusPoints, cashbackOffer, or personalizedOffer")
+    let rewardType: String
+}
+
+@Generable
+struct AIRewardAnalysis {
+    @Guide(description: "List of 2-4 personalized reward recommendations based on user behavior")
+    let recommendations: [AIRewardRecommendation]
+
+    @Guide(description: "Brief explanation of why these rewards were recommended")
+    let rationale: String
+}
+
 @Observable
 final class LoyaltyEngine {
     // MARK: - Properties
 
     var isProcessing: Bool = false
+    private var languageModelSession: LanguageModelSession?
+    private var isAIAvailable: Bool {
+        let systemModel = SystemLanguageModel.default
+        switch systemModel.availability {
+        case .available:
+            return true
+        case .unavailable:
+            return false
+        }
+    }
+
+    // MARK: - Initialization
+
+    init() {
+        initializeLanguageModel()
+    }
 
     // MARK: - Methods
 
@@ -102,6 +153,35 @@ final class LoyaltyEngine {
     }
 
     // MARK: - Private Methods
+
+    private func initializeLanguageModel() {
+        guard isAIAvailable else {
+            return
+        }
+
+        let instructions = Instructions("""
+            You are a financial rewards expert specializing in personalized loyalty programs.
+            Your task is to analyze user transaction behavior and create compelling, personalized reward offers.
+
+            Guidelines:
+            - Recommend 2-4 relevant rewards based on the user's transaction patterns
+            - Focus on rewards that align with their spending habits
+            - Be creative but realistic with cashback percentages (1-10%)
+            - Ensure rewards are achievable and motivating
+            - Provide clear, engaging descriptions
+            - Consider both P2P and merchant transaction preferences
+            - Balance between bonusPoints, cashbackOffer, and personalizedOffer types
+
+            Your recommendations should feel personal and valuable to the user.
+            """)
+
+        languageModelSession = LanguageModelSession(instructions: instructions)
+
+        // Prewarm the model for better performance
+        Task {
+            languageModelSession?.prewarm()
+        }
+    }
 
     private func calculateBasePoints(for amount: Double, paymentType: PaymentType) -> Int {
         var basePoints = Int(amount * 10)
@@ -241,6 +321,67 @@ final class LoyaltyEngine {
         insights: UserBehaviorInsights,
         userId: String
     ) async -> [Reward] {
+        // If AI is not available, fall back to rule-based rewards
+        guard isAIAvailable, let session = languageModelSession else {
+            return generateFallbackRewards(insights: insights, userId: userId)
+        }
+
+        do {
+            // Create a detailed prompt with user behavior insights
+            let prompt = Prompt("""
+                Analyze this user's transaction behavior and recommend personalized rewards:
+
+                Transaction Statistics:
+                - P2P Transactions: \(insights.p2pTransactionCount)
+                - Merchant Transactions: \(insights.merchantTransactionCount)
+                - Total Spent: €\(String(format: "%.2f", insights.totalSpent))
+                - Average Transaction: €\(String(format: "%.2f", insights.averageTransactionAmount))
+                - Preferred Payment Type: \(insights.preferredPaymentType.rawValue)
+                - Transaction Frequency: \(insights.transactionFrequency) transactions
+                \(insights.mostFrequentRecipient.map { "- Most Frequent Recipient: \($0)" } ?? "")
+
+                Generate personalized reward recommendations that will motivate this user.
+                """)
+
+            // Request structured AI recommendations
+            let response = try await session.respond(to: prompt, generating: AIRewardAnalysis.self)
+
+            // Convert AI recommendations to Reward objects
+            var rewards: [Reward] = []
+            for aiReward in response.content.recommendations {
+                let rewardType: RewardType = switch aiReward.rewardType.lowercased() {
+                case "bonuspoints": .bonusPoints
+                case "cashbackoffer": .cashbackOffer
+                default: .personalizedOffer
+                }
+
+                let reward = Reward(
+                    userId: userId,
+                    title: aiReward.title,
+                    rewardDescription: aiReward.description,
+                    rewardType: rewardType,
+                    cashbackPercentage: aiReward.cashbackPercentage,
+                    minTransactionAmount: aiReward.minTransactionAmount,
+                    maxCashback: aiReward.maxCashback,
+                    isPersonalized: true,
+                    maxUsages: aiReward.maxUsages
+                )
+                rewards.append(reward)
+            }
+
+            return rewards
+
+        } catch {
+            // Log error and fall back to rule-based rewards
+            print("AI reward generation failed: \(error). Using fallback rewards.")
+            return generateFallbackRewards(insights: insights, userId: userId)
+        }
+    }
+
+    private func generateFallbackRewards(
+        insights: UserBehaviorInsights,
+        userId: String
+    ) -> [Reward] {
         var rewards: [Reward] = []
 
         if insights.p2pTransactionCount > insights.merchantTransactionCount {
