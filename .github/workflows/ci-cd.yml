@@ -1,0 +1,75 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      skip_deployment:
+        description: 'Skip TestFlight deployment'
+        required: false
+        type: boolean
+        default: false
+
+env:
+  SCHEME: Wero
+  IOS_SIMULATOR: 'iPhone 17 Pro'
+  IOS_VERSION: '26.1'
+  COVERAGE_THRESHOLD: 80.0
+
+jobs:
+  quality:
+    name: Quality Checks
+    runs-on: macos-26
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Setup Xcode
+      run: |
+        sudo xcode-select -s /Applications/Xcode_26.0.1.app/Contents/Developer
+        xcodebuild -version
+    
+    - name: Install SwiftLint
+      run: brew install swiftlint
+    
+    - name: SwiftFormat
+      run: |
+        swiftformat . --lint
+        [ $? -eq 0 ] || exit 1
+    
+    - name: SwiftLint
+      run: swiftlint lint --strict
+    
+    - name: Tests
+      run: |
+        xcodebuild test \
+          -scheme "$SCHEME" \
+          -destination "platform=iOS Simulator,name=$IOS_SIMULATOR,OS=$IOS_VERSION" \
+          -enableCodeCoverage YES \
+          -resultBundlePath build/result.xcresult \
+          -parallel-testing-enabled YES \
+          -disableAutomaticPackageResolution
+    
+    - name: Coverage
+      run: |
+        COVERAGE=$(xcrun xccov view --report --json build/result.xcresult | \
+          python3 -c "import sys, json; print(f\"{json.load(sys.stdin)['lineCoverage'] * 100:.2f}\")")
+        
+        echo "📈 Coverage: ${COVERAGE}%"
+        
+        if (( $(echo "$COVERAGE < $COVERAGE_THRESHOLD" | bc -l) )); then
+          echo "❌ Below ${COVERAGE_THRESHOLD}% threshold"
+          exit 1
+        fi
+    
+    - name: Upload test results
+      if: failure()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: build/result.xcresult
+        retention-days: 7

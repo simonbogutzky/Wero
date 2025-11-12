@@ -1,0 +1,5 @@
+# rules
+
+--disable trailingCommas
+--commas inline
+--disable wrapMultilineStatementBraces

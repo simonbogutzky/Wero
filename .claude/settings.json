@@ -1,0 +1,42 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|MultiEdit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "swiftformat \"$CLAUDE_FILE_PATHS\" && swiftlint lint --fix \"$CLAUDE_FILE_PATHS\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && bash scripts/test-with-coverage.sh && bash scripts/run-sonar.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allowedTools": [
+      "Read",
+      "Write",
+      "Edit",
+      "MultiEdit",
+      "Bash(swiftformat*)",
+      "Bash(swiftlint*)",
+      "Bash(bash scripts/test-with-coverage.sh*)",
+      "Bash(bash scripts/run-sonar.sh*)",
+      "Bash(mkdir*)",
+      "Bash(rm -rf build/*)"
+    ]
+  },
+  "environment": {
+    "SONAR_HOST_URL": "http://localhost:9000"
+  }
+}

@@ -1,0 +1,62 @@
+##########################################################
+# Aider configuration for LM Studio with qwen/qwen3-coder-30b
+##########################################################
+
+# Use openai/gpt-4 for proper litellm routing and file creation
+model: openai/gpt-4
+
+# Point to LM Studio with your Qwen3 Coder model
+openai-api-base: http://localhost:1234/v1
+
+# Environment variables
+set-env:
+  - OPENAI_API_KEY=lm-studio
+
+# Read-only files that aider should always reference
+read:
+  - CONVENTIONS.md
+
+# Repo map settings - MAXIMIZED for your 48GB RAM
+# Better codebase understanding with larger map
+map-tokens: 2048
+
+# Chat history - MAXIMIZED for excellent conversation context
+# Your M4 Pro can handle this easily
+max-chat-history-tokens: 8192
+
+# Auto-commit settings
+auto-commits: false
+dirty-commits: false
+
+# Output settings
+pretty: true
+stream: true
+
+# Git settings
+git: true
+gitignore: false
+
+# Formatting and Linting - runs FIRST to clean up code
+lint-cmd: swiftformat . --quiet && swiftlint lint --fix --quiet
+auto-lint: true
+
+# Testing - runs AFTER formatting to generate coverage data
+test-cmd: bash scripts/test-with-coverage.sh && bash scripts/run-sonar.sh
+auto-test: true
+
+# Suppress model metadata warnings for local models
+show-model-warnings: false
+
+# Optional settings you can enable:
+
+# Cache prompts for faster repeated requests (good with your RAM)
+# cache-prompts: true
+
+# Voice mode (if you want voice input)
+# voice-language: en
+
+# Suggest shell commands
+# suggest-shell-commands: true
+
+# Edit format override (if needed, but GPT-4 alias should work)
+edit-format: diff
