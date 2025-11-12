@@ -75,12 +75,16 @@ final class LoyaltyEngine {
 
         let aiRewards = await generateAIRecommendedRewards(insights: insights, userId: userId)
 
+        var newRewards: [Reward] = []
         for reward in aiRewards {
-            modelContext.insert(reward)
+            if !rewardExists(title: reward.title, userId: userId, modelContext: modelContext) {
+                modelContext.insert(reward)
+                newRewards.append(reward)
+            }
         }
 
         try? modelContext.save()
-        return aiRewards
+        return newRewards
     }
 
     func shouldSendStreakReminder(loyaltyProfile: LoyaltyProfile) -> (should: Bool, message: String?) {
@@ -235,6 +239,21 @@ final class LoyaltyEngine {
             mostFrequentRecipient: mostFrequentRecipient,
             transactionFrequency: transactions.count
         )
+    }
+
+    private func rewardExists(
+        title: String,
+        userId: String,
+        modelContext: ModelContext
+    ) -> Bool {
+        let descriptor = FetchDescriptor<Reward>(
+            predicate: #Predicate { reward in
+                reward.userId == userId && reward.title == title
+            }
+        )
+
+        guard let existingRewards = try? modelContext.fetch(descriptor) else { return false }
+        return !existingRewards.isEmpty
     }
 
     private func generateAIRecommendedRewards(
