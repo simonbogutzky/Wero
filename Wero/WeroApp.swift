@@ -19,7 +19,10 @@ struct WeroApp: App {
             User.self,
             Contact.self,
             Merchant.self,
-            Transaction.self
+            Transaction.self,
+            LoyaltyProfile.self,
+            Achievement.self,
+            Reward.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

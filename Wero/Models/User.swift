@@ -16,15 +16,17 @@ final class User {
     var name: String
     var email: String
     var balance: Double
+    var loyaltyProfileId: String?
     var createdAt: Date
 
     // MARK: - Initializers
 
-    init(id: String = UUID().uuidString, name: String, email: String, balance: Double = 1000.0) {
+    init(id: String = UUID().uuidString, name: String, email: String, balance: Double = 1000.0, loyaltyProfileId: String? = nil) {
         self.id = id
         self.name = name
         self.email = email
         self.balance = balance
+        self.loyaltyProfileId = loyaltyProfileId
         self.createdAt = Date()
     }
 }
