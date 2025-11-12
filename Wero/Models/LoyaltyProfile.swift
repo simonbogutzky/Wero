@@ -125,37 +125,37 @@ enum LoyaltyLevel: String, Codable {
 
     var pointsRequired: Int {
         switch self {
-        case .bronze: return 0
-        case .silver: return 1000
-        case .gold: return 5000
-        case .platinum: return 10000
+        case .bronze: 0
+        case .silver: 1000
+        case .gold: 5000
+        case .platinum: 10000
         }
     }
 
     var cashbackRate: Double {
         switch self {
-        case .bronze: return 0.01
-        case .silver: return 0.02
-        case .gold: return 0.03
-        case .platinum: return 0.05
+        case .bronze: 0.01
+        case .silver: 0.02
+        case .gold: 0.03
+        case .platinum: 0.05
         }
     }
 
     var icon: String {
         switch self {
-        case .bronze: return "medal.fill"
-        case .silver: return "star.fill"
-        case .gold: return "crown.fill"
-        case .platinum: return "sparkles"
+        case .bronze: "medal.fill"
+        case .silver: "star.fill"
+        case .gold: "crown.fill"
+        case .platinum: "sparkles"
         }
     }
 
     var color: String {
         switch self {
-        case .bronze: return "brown"
-        case .silver: return "gray"
-        case .gold: return "yellow"
-        case .platinum: return "purple"
+        case .bronze: "brown"
+        case .silver: "gray"
+        case .gold: "yellow"
+        case .platinum: "purple"
         }
     }
 }

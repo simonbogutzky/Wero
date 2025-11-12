@@ -27,6 +27,6 @@ final class User {
         self.email = email
         self.balance = balance
         self.loyaltyProfileId = loyaltyProfileId
-        self.createdAt = Date()
+        createdAt = Date()
     }
 }

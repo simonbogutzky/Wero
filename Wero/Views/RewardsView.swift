@@ -5,8 +5,8 @@
 //  Copyright © 2025 Bogutzky. All rights reserved.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct RewardsView: View {
     // MARK: - Properties

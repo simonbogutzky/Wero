@@ -68,7 +68,7 @@ final class Reward {
     // MARK: - Methods
 
     func canBeUsed() -> Bool {
-        return isActive && usageCount < maxUsages && Date() < expiresAt
+        isActive && usageCount < maxUsages && Date() < expiresAt
     }
 
     func use() {
@@ -80,7 +80,7 @@ final class Reward {
     }
 
     func calculateCashback(for amount: Double) -> Double {
-        guard canBeUsed() && amount >= minTransactionAmount else { return 0.0 }
+        guard canBeUsed(), amount >= minTransactionAmount else { return 0.0 }
         let cashback = amount * (cashbackPercentage / 100.0)
         return min(cashback, maxCashback)
     }
@@ -98,19 +98,19 @@ enum RewardType: String, Codable {
     var icon: String {
         switch self {
         case .cashback:
-            return "eurosign.circle.fill"
+            "eurosign.circle.fill"
         case .bonusPoints:
-            return "star.circle.fill"
+            "star.circle.fill"
         case .levelBonus:
-            return "crown.fill"
+            "crown.fill"
         case .streakBonus:
-            return "flame.fill"
+            "flame.fill"
         case .categoryBonus:
-            return "tag.fill"
+            "tag.fill"
         case .merchantSpecific:
-            return "building.2.fill"
+            "building.2.fill"
         case .personalizedOffer:
-            return "sparkles"
+            "sparkles"
         }
     }
 }

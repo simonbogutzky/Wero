@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import SwiftData
 import FoundationModels
+import SwiftData
 
 @Observable
 final class LoyaltyEngine {
@@ -92,7 +92,7 @@ final class LoyaltyEngine {
         let now = Date()
         let hoursSinceActivity = calendar.dateComponents([.hour], from: lastActivity, to: now).hour ?? 0
 
-        if hoursSinceActivity >= 20 && hoursSinceActivity < 24 {
+        if hoursSinceActivity >= 20, hoursSinceActivity < 24 {
             let streakDays = loyaltyProfile.streakDays
             let message = "Don't lose your \(streakDays)-day streak! Complete a transaction today."
             return (true, message)
@@ -164,35 +164,35 @@ final class LoyaltyEngine {
     ) -> Int {
         switch type {
         case .firstPayment:
-            return transactions.isEmpty ? 0 : 1
+            transactions.isEmpty ? 0 : 1
         case .tenP2PTransactions:
-            return transactions.filter { $0.paymentType == .p2p }.count
+            transactions.count(where: { $0.paymentType == .p2p })
         case .twentyFiveP2PTransactions:
-            return transactions.filter { $0.paymentType == .p2p }.count
+            transactions.count(where: { $0.paymentType == .p2p })
         case .fiftyP2PTransactions:
-            return transactions.filter { $0.paymentType == .p2p }.count
+            transactions.count(where: { $0.paymentType == .p2p })
         case .firstMerchantPayment:
-            return transactions.filter { $0.paymentType != .p2p }.isEmpty ? 0 : 1
+            transactions.filter { $0.paymentType != .p2p }.isEmpty ? 0 : 1
         case .tenMerchantPayments:
-            return transactions.filter { $0.paymentType != .p2p }.count
+            transactions.count(where: { $0.paymentType != .p2p })
         case .fiftyMerchantPayments:
-            return transactions.filter { $0.paymentType != .p2p }.count
+            transactions.count(where: { $0.paymentType != .p2p })
         case .weekStreak:
-            return loyaltyProfile.streakDays
+            loyaltyProfile.streakDays
         case .monthStreak:
-            return loyaltyProfile.streakDays
+            loyaltyProfile.streakDays
         case .reachedSilver:
-            return loyaltyProfile.currentLevel.pointsRequired >= 1000 ? 1 : 0
+            loyaltyProfile.currentLevel.pointsRequired >= 1000 ? 1 : 0
         case .reachedGold:
-            return loyaltyProfile.currentLevel.pointsRequired >= 5000 ? 1 : 0
+            loyaltyProfile.currentLevel.pointsRequired >= 5000 ? 1 : 0
         case .reachedPlatinum:
-            return loyaltyProfile.currentLevel.pointsRequired >= 10000 ? 1 : 0
+            loyaltyProfile.currentLevel.pointsRequired >= 10000 ? 1 : 0
         case .weroChampion:
-            return transactions.count
+            transactions.count
         case .bigSpender:
-            return transactions.contains { $0.amount >= 500 } ? 1 : 0
+            transactions.contains { $0.amount >= 500 } ? 1 : 0
         case .savingsGoal:
-            return 0
+            0
         }
     }
 

@@ -45,7 +45,7 @@ final class Achievement {
 
     func updateProgress(_ newProgress: Int) {
         progress = newProgress
-        if progress >= targetProgress && !isUnlocked {
+        if progress >= targetProgress, !isUnlocked {
             unlock()
         }
     }
@@ -74,120 +74,120 @@ enum AchievementType: String, Codable, CaseIterable {
     case savingsGoal = "Savings Goal"
 
     var title: String {
-        return rawValue
+        rawValue
     }
 
     var description: String {
         switch self {
         case .firstPayment:
-            return "Completed your first Wero payment"
+            "Completed your first Wero payment"
         case .tenP2PTransactions:
-            return "Completed 10 person-to-person transfers"
+            "Completed 10 person-to-person transfers"
         case .twentyFiveP2PTransactions:
-            return "Completed 25 person-to-person transfers"
+            "Completed 25 person-to-person transfers"
         case .fiftyP2PTransactions:
-            return "Completed 50 person-to-person transfers"
+            "Completed 50 person-to-person transfers"
         case .firstMerchantPayment:
-            return "Made your first merchant payment"
+            "Made your first merchant payment"
         case .tenMerchantPayments:
-            return "Completed 10 merchant payments"
+            "Completed 10 merchant payments"
         case .fiftyMerchantPayments:
-            return "Completed 50 merchant payments"
+            "Completed 50 merchant payments"
         case .weekStreak:
-            return "Maintained a 7-day activity streak"
+            "Maintained a 7-day activity streak"
         case .monthStreak:
-            return "Maintained a 30-day activity streak"
+            "Maintained a 30-day activity streak"
         case .reachedSilver:
-            return "Reached Silver loyalty level"
+            "Reached Silver loyalty level"
         case .reachedGold:
-            return "Reached Gold loyalty level"
+            "Reached Gold loyalty level"
         case .reachedPlatinum:
-            return "Reached Platinum loyalty level"
+            "Reached Platinum loyalty level"
         case .weroChampion:
-            return "Became a Wero Champion with 100+ transactions"
+            "Became a Wero Champion with 100+ transactions"
         case .bigSpender:
-            return "Completed a transaction over €500"
+            "Completed a transaction over €500"
         case .savingsGoal:
-            return "Maintained balance above €1000"
+            "Maintained balance above €1000"
         }
     }
 
     var icon: String {
         switch self {
         case .firstPayment:
-            return "checkmark.circle.fill"
+            "checkmark.circle.fill"
         case .tenP2PTransactions, .twentyFiveP2PTransactions, .fiftyP2PTransactions:
-            return "person.2.fill"
+            "person.2.fill"
         case .firstMerchantPayment, .tenMerchantPayments, .fiftyMerchantPayments:
-            return "cart.fill"
+            "cart.fill"
         case .weekStreak, .monthStreak:
-            return "flame.fill"
+            "flame.fill"
         case .reachedSilver:
-            return "star.fill"
+            "star.fill"
         case .reachedGold:
-            return "crown.fill"
+            "crown.fill"
         case .reachedPlatinum:
-            return "sparkles"
+            "sparkles"
         case .weroChampion:
-            return "trophy.fill"
+            "trophy.fill"
         case .bigSpender:
-            return "eurosign.circle.fill"
+            "eurosign.circle.fill"
         case .savingsGoal:
-            return "banknote.fill"
+            "banknote.fill"
         }
     }
 
     var targetCount: Int {
         switch self {
         case .firstPayment, .firstMerchantPayment:
-            return 1
+            1
         case .tenP2PTransactions, .tenMerchantPayments:
-            return 10
+            10
         case .twentyFiveP2PTransactions:
-            return 25
+            25
         case .fiftyP2PTransactions, .fiftyMerchantPayments:
-            return 50
+            50
         case .weekStreak:
-            return 7
+            7
         case .monthStreak:
-            return 30
+            30
         case .reachedSilver, .reachedGold, .reachedPlatinum:
-            return 1
+            1
         case .weroChampion:
-            return 100
+            100
         case .bigSpender:
-            return 1
+            1
         case .savingsGoal:
-            return 1
+            1
         }
     }
 
     var pointsReward: Int {
         switch self {
         case .firstPayment, .firstMerchantPayment:
-            return 50
+            50
         case .tenP2PTransactions, .tenMerchantPayments:
-            return 100
+            100
         case .twentyFiveP2PTransactions:
-            return 250
+            250
         case .fiftyP2PTransactions, .fiftyMerchantPayments:
-            return 500
+            500
         case .weekStreak:
-            return 200
+            200
         case .monthStreak:
-            return 1000
+            1000
         case .reachedSilver:
-            return 300
+            300
         case .reachedGold:
-            return 800
+            800
         case .reachedPlatinum:
-            return 2000
+            2000
         case .weroChampion:
-            return 1500
+            1500
         case .bigSpender:
-            return 400
+            400
         case .savingsGoal:
-            return 300
+            300
         }
     }
 }

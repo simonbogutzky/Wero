@@ -122,9 +122,9 @@ struct MerchantPaymentView: View {
 
     private var filteredMerchants: [Merchant] {
         if paymentType == .merchantOnline {
-            return merchants.filter { $0.address == "Online" }
+            merchants.filter { $0.address == "Online" }
         } else {
-            return merchants.filter { $0.address != "Online" }
+            merchants.filter { $0.address != "Online" }
         }
     }
 

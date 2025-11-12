@@ -5,8 +5,8 @@
 //  Copyright © 2025 Bogutzky. All rights reserved.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct GamificationView: View {
     // MARK: - Properties
@@ -300,7 +300,7 @@ struct GamificationView: View {
                 .font(.caption)
             }
 
-            let unlockedAchievements = userAchievements.filter { $0.isUnlocked }.prefix(3)
+            let unlockedAchievements = userAchievements.filter(\.isUnlocked).prefix(3)
 
             if unlockedAchievements.isEmpty {
                 Text("Complete transactions to unlock achievements!")

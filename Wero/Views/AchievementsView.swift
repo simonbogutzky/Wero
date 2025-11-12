@@ -5,8 +5,8 @@
 //  Copyright © 2025 Bogutzky. All rights reserved.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 struct AchievementsView: View {
     // MARK: - Properties
@@ -28,7 +28,7 @@ struct AchievementsView: View {
         case .all:
             return userAchievements
         case .unlocked:
-            return userAchievements.filter { $0.isUnlocked }
+            return userAchievements.filter(\.isUnlocked)
         case .locked:
             return userAchievements.filter { !$0.isUnlocked }
         }
@@ -36,12 +36,12 @@ struct AchievementsView: View {
 
     var unlockedCount: Int {
         guard let userId = appState.currentUser?.id else { return 0 }
-        return achievements.filter { $0.userId == userId && $0.isUnlocked }.count
+        return achievements.count(where: { $0.userId == userId && $0.isUnlocked })
     }
 
     var totalCount: Int {
         guard let userId = appState.currentUser?.id else { return 0 }
-        return achievements.filter { $0.userId == userId }.count
+        return achievements.count(where: { $0.userId == userId })
     }
 
     var body: some View {
