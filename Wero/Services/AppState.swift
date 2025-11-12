@@ -14,6 +14,7 @@ final class AppState {
 
     var currentUser: User?
     var isLoggedIn: Bool = false
+    let loyaltyEngine = LoyaltyEngine()
 
     // MARK: - Methods
 
@@ -61,6 +62,42 @@ final class AppState {
         modelContext.insert(transaction)
         try? modelContext.save()
 
+        // Process loyalty points and achievements
+        if let loyaltyProfile = getLoyaltyProfile(for: currentUser.id, modelContext: modelContext) {
+            loyaltyEngine.processTransaction(
+                amount: amount,
+                paymentType: paymentType,
+                loyaltyProfile: loyaltyProfile,
+                modelContext: modelContext
+            )
+            loyaltyEngine.checkAndUnlockAchievements(
+                userId: currentUser.id,
+                loyaltyProfile: loyaltyProfile,
+                modelContext: modelContext
+            )
+        }
+
         return true
+    }
+
+    func getLoyaltyProfile(for userId: String, modelContext: ModelContext) -> LoyaltyProfile? {
+        let descriptor = FetchDescriptor<LoyaltyProfile>(
+            predicate: #Predicate { $0.userId == userId }
+        )
+
+        if let profile = try? modelContext.fetch(descriptor).first {
+            return profile
+        }
+
+        let newProfile = LoyaltyProfile(userId: userId)
+        modelContext.insert(newProfile)
+        try? modelContext.save()
+
+        if let user = currentUser {
+            user.loyaltyProfileId = newProfile.id
+            try? modelContext.save()
+        }
+
+        return newProfile
     }
 }
