@@ -31,7 +31,7 @@ struct AIRewardRecommendation {
     @Guide(description: "Maximum number of times this reward can be used", .range(1...10))
     let maxUsages: Int
 
-    @Guide(description: "Type of reward: bonusPoints, cashbackOffer, or personalizedOffer")
+    @Guide(description: "Type of reward: bonusPoints, cashback, or personalizedOffer")
     let rewardType: String
 }
 
@@ -170,7 +170,7 @@ final class LoyaltyEngine {
             - Ensure rewards are achievable and motivating
             - Provide clear, engaging descriptions
             - Consider both P2P and merchant transaction preferences
-            - Balance between bonusPoints, cashbackOffer, and personalizedOffer types
+            - Balance between bonusPoints, cashback, and personalizedOffer types
 
             Your recommendations should feel personal and valuable to the user.
             """)
@@ -351,7 +351,7 @@ final class LoyaltyEngine {
             for aiReward in response.content.recommendations {
                 let rewardType: RewardType = switch aiReward.rewardType.lowercased() {
                 case "bonuspoints": .bonusPoints
-                case "cashbackoffer": .cashbackOffer
+                case "cashback": .cashback
                 default: .personalizedOffer
                 }
 
