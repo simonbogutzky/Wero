@@ -5,6 +5,7 @@
 //  Copyright © 2025 Bogutzky. All rights reserved.
 //
 
+import SwiftData
 import SwiftUI
 
 struct ContentView: View {
