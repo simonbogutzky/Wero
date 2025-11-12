@@ -84,7 +84,7 @@ struct GamificationView: View {
             HStack {
                 Image(systemName: profile.currentLevel.icon)
                     .font(.system(size: 40))
-                    .foregroundColor(.accentColor)
+                    .foregroundColor(.sparkassenRed)
 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(profile.currentLevel.rawValue)
@@ -115,7 +115,7 @@ struct GamificationView: View {
             }
 
             ProgressView(value: profile.levelProgress)
-                .tint(.accentColor)
+                .tint(.sparkassenRed)
 
             HStack {
                 Label("\(Int(profile.currentLevel.cashbackRate * 100))% Cashback", systemImage: "eurosign.circle.fill")
@@ -140,7 +140,7 @@ struct GamificationView: View {
         HStack(spacing: 16) {
             Image(systemName: "flame.fill")
                 .font(.system(size: 36))
-                .foregroundColor(.orange)
+                .foregroundColor(.sparkassenOrange)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text("\(profile.streakDays) Day Streak")
@@ -193,7 +193,7 @@ struct GamificationView: View {
         VStack(spacing: 6) {
             Image(systemName: icon)
                 .font(.title3)
-                .foregroundColor(.accentColor)
+                .foregroundColor(.sparkassenRed)
 
             Text(value)
                 .font(.headline)
@@ -246,14 +246,14 @@ struct GamificationView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Image(systemName: reward.rewardType.icon)
-                    .foregroundColor(.accentColor)
+                    .foregroundColor(.sparkassenRed)
 
                 Spacer()
 
                 if reward.isPersonalized {
                     Image(systemName: "sparkles")
                         .font(.caption)
-                        .foregroundColor(.purple)
+                        .foregroundColor(.sparkassenYellow)
                 }
             }
 
@@ -270,7 +270,7 @@ struct GamificationView: View {
                 Text("\(Int(reward.cashbackPercentage))% Back")
                     .font(.caption2)
                     .fontWeight(.bold)
-                    .foregroundColor(.green)
+                    .foregroundColor(.sparkassenYellow)
 
                 Spacer()
 
@@ -326,7 +326,7 @@ struct GamificationView: View {
         HStack(spacing: 12) {
             Image(systemName: achievement.type.icon)
                 .font(.title2)
-                .foregroundColor(.accentColor)
+                .foregroundColor(.sparkassenRed)
                 .frame(width: 40)
 
             VStack(alignment: .leading, spacing: 2) {

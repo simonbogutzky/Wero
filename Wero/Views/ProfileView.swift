@@ -45,7 +45,7 @@ struct ProfileView: View {
                             Text("Kontostand")
                             Spacer()
                             Text(String(format: "%.2f €", user.balance))
-                                .foregroundStyle(.blue)
+                                .foregroundStyle(.sparkassenRed)
                                 .fontWeight(.semibold)
                         }
 

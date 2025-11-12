@@ -65,7 +65,7 @@ struct TransactionRow: View {
 
                 Text(String(format: "-%.2f €", transaction.amount))
                     .font(.headline)
-                    .foregroundStyle(.red)
+                    .foregroundStyle(.sparkassenRed)
             }
 
             HStack {
@@ -88,13 +88,13 @@ struct TransactionRow: View {
     private var paymentTypeColor: Color {
         switch transaction.paymentType {
         case .p2p:
-            .blue
+            .sparkassenDarkBlue
         case .merchantContactless:
-            .green
+            .sparkassenYellow
         case .merchantQRCode:
-            .orange
+            .sparkassenOrange
         case .merchantOnline:
-            .purple
+            .sparkassenLightBlue
         }
     }
 }
