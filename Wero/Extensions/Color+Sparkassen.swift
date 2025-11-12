@@ -39,8 +39,8 @@ extension Color {
     static let loyaltySilver = Color(red: 0.753, green: 0.753, blue: 0.753)
 
     /// Gold level color
-    static let loyaltyGold = sparkassenYellow
+    static let loyaltyGold = Color("SparkassenYellow")
 
     /// Platinum level color
-    static let loyaltyPlatinum = sparkassenDarkBlue
+    static let loyaltyPlatinum = Color("SparkassenDarkBlue")
 }
